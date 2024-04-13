@@ -29,9 +29,9 @@ class ExtractInfo:
         req = requests.post(self.access['apiurl'],
                          headers=self.access['header'],
                          json={'query': qsObj.animeInfoQS, 'variables': id_val})
-        
+        retry = req.headers.get('Retry-After')
         if req.status_code != 200:
-            raise Exception(f"Data post unsuccessful. ({req.status_code})")
+            raise Exception(f"Data post unsuccessful. ({req.status_code})  , Retry:{'None' if not retry else retry}")
 
         try:
             extracted_data = json.loads(req.text)
